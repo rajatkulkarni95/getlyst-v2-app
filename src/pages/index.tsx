@@ -1,35 +1,31 @@
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import Router from "next/router";
+import Head from "next/head";
+import { useEffect } from "react";
+import { useUser } from "../hooks/useUser";
 import { removeHashParamsFromUrl } from "../utils/hashParams";
-import { clearAccessTokens, getAccessToken } from "../utils/spotify";
+import { clearAccessTokens } from "../utils/localStorage";
 
 const Home: NextPage = () => {
-  const [accessToken, setAccessToken] = useState<string>("");
+  const { user } = useUser();
 
-  const handleClearLocalStorage = () => {
-    clearAccessTokens();
-    setAccessToken("");
-  };
-
+  // if logged in, redirect to the dashboard
   useEffect(() => {
-    const token = getAccessToken();
-    setAccessToken(token);
-    removeHashParamsFromUrl();
-  }, []);
+    if (user) {
+      Router.replace("/dashboard");
+    }
+  }, [user]);
 
   return (
     <div>
+      <Head>
+        <title>Getlyst - Playlist Generator</title>
+      </Head>
       <h1>GetLyst - Better Playlist Creation</h1>
-      {accessToken ? (
-        <div>
-          <h2>Logged in</h2>
-          <button onClick={handleClearLocalStorage}>Logout</button>
-        </div>
-      ) : (
-        <a href="http://localhost:8080/api/v1/login?service=spotify">
-          Login to Spotify
-        </a>
-      )}
+
+      <a href="http://localhost:8080/api/v1/login?service=spotify">
+        Login to Spotify
+      </a>
     </div>
   );
 };

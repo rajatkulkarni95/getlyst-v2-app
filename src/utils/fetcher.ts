@@ -1,13 +1,17 @@
 // A simple fetch that'll be used in swr for data fetching
 
-import { spotifyAccessToken } from "../constants";
-import { getItem } from "./localStorage";
+import { getAccessToken } from "./spotify/tokenFetch";
 
-export async function fetcher<JSON = any>(
+export async function fetcherWithToken<T>(
   input: RequestInfo,
   init?: RequestInit
-): Promise<JSON> {
-  const token = await getItem(spotifyAccessToken);
+): Promise<T> {
+  const token = await getAccessToken();
+
+  if (!token) {
+    throw new Error();
+  }
+
   const res = await fetch(input, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -17,7 +21,7 @@ export async function fetcher<JSON = any>(
   return res.json();
 }
 
-export async function noAuthFetcher<JSON = any>(
+export async function fetcherWithoutToken<JSON = any>(
   input: RequestInfo,
   init?: RequestInit
 ): Promise<JSON> {
