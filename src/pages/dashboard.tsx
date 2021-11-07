@@ -4,9 +4,21 @@ import Head from "next/head";
 import { useEffect } from "react";
 import Router from "next/router";
 import { clearAccessTokens } from "../utils/localStorage";
+import { fetchUserFromDatabase } from "../services/user";
 
 const Dashboard: NextPage = () => {
   const { user, mutate, loggedOut } = useUser();
+
+  useEffect(() => {
+    async function fetchUser() {
+      if (user) {
+        const userData = await fetchUserFromDatabase(user.email);
+        return userData;
+      }
+    }
+
+    console.log(fetchUser());
+  }, [user]);
 
   useEffect(() => {
     if (loggedOut) {
