@@ -2,12 +2,11 @@
 
 import { getAccessToken } from "./spotify/tokenFetch";
 
-export async function fetcherWithToken<T>(
+export async function getWithToken<T>(
   input: RequestInfo,
   init?: RequestInit
 ): Promise<T> {
   const token = await getAccessToken();
-
   if (!token) {
     throw new Error();
   }
@@ -21,12 +20,32 @@ export async function fetcherWithToken<T>(
   return res.json();
 }
 
-export async function fetcherWithoutToken<JSON = any>(
+export async function post<T>(
+  input: RequestInfo,
+  body: object,
+  init?: RequestInit
+): Promise<T> {
+  const token = await getAccessToken();
+
+  if (!token) {
+    throw new Error();
+  }
+
+  const res = await fetch(input, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+  return res.json();
+}
+
+export async function getWithoutToken<JSON = any>(
   input: RequestInfo,
   init?: RequestInit
 ): Promise<JSON> {
-  const res = await fetch(input, {
-    headers: { "Content-Type": "application/json" },
-  });
+  const res = await fetch(input);
   return res.json();
 }

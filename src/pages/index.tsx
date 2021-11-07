@@ -3,8 +3,6 @@ import Router from "next/router";
 import Head from "next/head";
 import { useEffect } from "react";
 import { useUser } from "../hooks/useUser";
-import { removeHashParamsFromUrl } from "../utils/hashParams";
-import { clearAccessTokens } from "../utils/localStorage";
 
 const Home: NextPage = () => {
   const { user } = useUser();

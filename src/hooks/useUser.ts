@@ -1,10 +1,10 @@
 import useSWR from "swr";
-import { fetcherWithToken } from "../utils/fetcher";
+import { getWithToken } from "../utils/fetcher";
 
 export const useUser = () => {
   const { data, mutate, error } = useSWR(
     "https://api.spotify.com/v1/me",
-    fetcherWithToken
+    getWithToken
   );
 
   const loading = !data && !error;

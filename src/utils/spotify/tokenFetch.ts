@@ -1,6 +1,6 @@
 import { EXPIRATION_TIME } from "../../constants";
 import { apiUrl } from "../env";
-import { fetcherWithoutToken } from "../fetcher";
+import { getWithoutToken } from "../fetcher";
 import { getHashParams, removeHashParamsFromUrl } from "../hashParams";
 import {
   getLocalAccessToken,
@@ -17,9 +17,9 @@ type RefreshResponse = {
 // Refresh the token
 export const refreshAccessToken = async () => {
   try {
-    const refresh_token = getLocalRefreshToken();
-    const { access_token } = await fetcherWithoutToken<RefreshResponse>(
-      `${apiUrl}/spotify/refresh-token/${refresh_token}`
+    const refresh_token = await getLocalRefreshToken();
+    const { access_token } = await getWithoutToken<RefreshResponse>(
+      `${apiUrl}/spotify/refresh_token?refresh_token=${refresh_token}`
     );
     setLocalAccessToken(access_token);
     window.location.reload();
@@ -33,31 +33,33 @@ export const refreshAccessToken = async () => {
 export const getAccessToken = () => {
   const { error, access_token, refresh_token } = getHashParams();
 
+  // If the tokens are present in the hash params, set them to local storage, and return out of the function
+  if (access_token && refresh_token) {
+    setLocalRefreshToken(refresh_token);
+    setLocalAccessToken(access_token);
+
+    return access_token;
+  }
+
   if (error) {
     console.error(error);
     refreshAccessToken();
   }
 
   // If token has expired
-  if (Date.now() - Number(getTokenTimestamp()) > EXPIRATION_TIME) {
-    console.warn("Access token has expired, refreshing...");
+  const tokenTimestamp = getTokenTimestamp();
 
-    refreshAccessToken();
+  if (tokenTimestamp) {
+    if (Date.now() - Number(tokenTimestamp) > EXPIRATION_TIME) {
+      console.warn("Access token has expired, refreshing...");
+
+      refreshAccessToken();
+    }
   }
 
   const localAccessToken = getLocalAccessToken();
-  const localRefreshToken = getLocalRefreshToken();
-
-  // If there is no REFRESH token in local storage, set it as `refresh_token` from params
-  if (!localRefreshToken || localRefreshToken === "undefined") {
-    setLocalRefreshToken(refresh_token);
-  }
-
-  // If there is no ACCESS token in local storage, set it and return `access_token` from params
-  if (!localAccessToken || localAccessToken === "undefined") {
-    setLocalAccessToken(access_token);
-    return access_token;
-  }
 
   removeHashParamsFromUrl();
+
+  return localAccessToken;
 };
