@@ -1,12 +1,20 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { getWithToken } from "@utils/fetcher";
 import { styled } from "../../../stitches.config";
+
+type PlaylistType = {
+  id: string;
+  name: string;
+};
 
 const PlaylistLink = styled(Link, {
   fontFamily: "$system",
   color: "$hiContrast",
-
+  margin: "8px 0",
   variants: {
     size: {
       1: {
@@ -28,14 +36,21 @@ const Container = styled("div", {
 });
 
 const Playlists: NextPage = () => {
+  const { data, mutate, error } = useSWR(
+    "https://api.spotify.com/v1/me/playlists/",
+    getWithToken
+  );
+
   return (
     <Container>
       <Head>
         <title>GetLyst - Playlists</title>
       </Head>
-      <PlaylistLink href="/playlists/rock">Rock</PlaylistLink>
-      <PlaylistLink href="/playlists/jazz">Jazz</PlaylistLink>
-      <PlaylistLink href="/playlists/pop">Pop</PlaylistLink>
+      {data?.items?.map((playlist: PlaylistType) => (
+        <PlaylistLink href={`/playlists/${playlist.id}`}>
+          {playlist.name}
+        </PlaylistLink>
+      ))}
     </Container>
   );
 };

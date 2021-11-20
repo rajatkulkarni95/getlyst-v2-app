@@ -1,6 +1,6 @@
 import { EXPIRATION_TIME } from "../../constants";
 import { apiUrl } from "../env";
-import { getWithoutToken } from "../fetcher";
+import { getWithoutToken, refreshToken } from "../fetcher";
 import { getHashParams, removeHashParamsFromUrl } from "../hashParams";
 import {
   getLocalAccessToken,
@@ -18,8 +18,12 @@ type RefreshResponse = {
 export const refreshAccessToken = async () => {
   try {
     const refresh_token = await getLocalRefreshToken();
-    const { access_token } = await getWithoutToken<RefreshResponse>(
-      `${apiUrl}/spotify/refresh_token?refresh_token=${refresh_token}`
+    const payload = {
+      refresh_token: refresh_token,
+    };
+    const { access_token } = await refreshToken<RefreshResponse>(
+      `${apiUrl}/spotify/refresh_token`,
+      payload
     );
     setLocalAccessToken(access_token);
     window.location.reload();

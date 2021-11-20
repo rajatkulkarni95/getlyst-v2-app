@@ -49,3 +49,18 @@ export async function getWithoutToken<JSON = any>(
   const res = await fetch(input);
   return res.json();
 }
+
+export async function refreshToken<JSON = any>(
+  input: RequestInfo,
+  body: object,
+  init?: RequestInit
+): Promise<JSON> {
+  const res = await fetch(input, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+  return res.json();
+}
