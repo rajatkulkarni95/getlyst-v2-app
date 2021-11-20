@@ -3,6 +3,7 @@ import { useUser } from "../hooks/useUser";
 import Head from "next/head";
 import { useEffect } from "react";
 import Router from "next/router";
+import Link from "next/link";
 import { clearAccessTokens } from "../utils/localStorage";
 import { fetchUserFromDatabase } from "../services/user";
 
@@ -33,7 +34,7 @@ const Dashboard: NextPage = () => {
       </Head>
       {user && (
         <div>
-          <h1>Welcome, {user.id}</h1>{" "}
+          <h1>Welcome, {user.id}</h1> <Link href="/playlists">Playlists</Link>
           <button
             onClick={async () => {
               clearAccessTokens();
