@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   // if logged in, redirect to the dashboard
   useEffect(() => {
     if (user) {
-      Router.replace("/dashboard");
+      Router.replace("/playlists");
     }
   }, [user]);
 

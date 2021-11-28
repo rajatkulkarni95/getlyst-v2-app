@@ -35,7 +35,7 @@ export const Text = styled("p", {
   },
 });
 
-export const Header = styled("h1", {
+export const Heading = styled("h1", {
   variants: {
     size: {
       1: {

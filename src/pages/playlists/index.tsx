@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { getWithToken } from "@utils/fetcher";
 import { styled } from "../../../stitches.config";
+import Header from "@components/Common/Header";
 
 type PlaylistType = {
   id: string;
@@ -46,6 +47,7 @@ const Playlists: NextPage = () => {
 
   return (
     <Container>
+      <Header />
       <Head>
         <title>GetLyst - Playlists</title>
       </Head>
