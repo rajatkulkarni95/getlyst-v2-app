@@ -12,8 +12,7 @@ type PlaylistType = {
 };
 
 const PlaylistLink = styled(Link, {
-  fontFamily: "$system",
-  color: "$hiContrast",
+  color: "$primaryText",
   margin: "8px 0",
   variants: {
     size: {
@@ -35,8 +34,12 @@ const Container = styled("div", {
   flexDirection: "column",
 });
 
+type DataType = {
+  items: [];
+};
+
 const Playlists: NextPage = () => {
-  const { data, mutate, error } = useSWR(
+  const { data, error } = useSWR<DataType, Error>(
     "https://api.spotify.com/v1/me/playlists/",
     getWithToken
   );

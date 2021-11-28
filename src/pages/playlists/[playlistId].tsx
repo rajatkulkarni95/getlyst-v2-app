@@ -4,24 +4,10 @@ import useSWR from "swr";
 import { getWithToken } from "@utils/fetcher";
 import { PlaylistData } from "types/playlist";
 import PlaylistImage from "@components/Playlist/PlaylistImage";
+import { Text } from "@components/Common/Text";
 
-const Text = styled("p", {
-  fontFamily: "$system",
-  color: "$hiContrast",
-  margin: "16px 0",
-  variants: {
-    size: {
-      1: {
-        fontSize: "$1",
-      },
-      2: {
-        fontSize: "$2",
-      },
-      3: {
-        fontSize: "$3",
-      },
-    },
-  },
+const Container = styled("div", {
+  display: "flex",
 });
 
 export default function Playlist() {
@@ -51,7 +37,9 @@ export default function Playlist() {
       >
         Back
       </button>
-      <Text size={3}>{data?.name}</Text>
+      <Text size={3} color="primary">
+        {data?.name}
+      </Text>
       {playlistImages && <PlaylistImage images={playlistImages} />}
     </div>
   );
