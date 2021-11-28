@@ -5,14 +5,16 @@ import createPlaylistSlice, {
   PlaylistCommon,
 } from "./playlistSlice";
 
+import createUserSlice, { UserCommon, UserSlice } from "./userSlice";
+
 export type SliceStateCreator<
   S extends State,
-  C extends State = { PlaylistSlice: any }, // The common part accessible by the slice
+  C extends State = { PlaylistSlice: any; UserSlice: any }, // The common part accessible by the slice
   T extends S = S & C,
   CustomSetState = SetState<T>
 > = (set: CustomSetState, get: GetState<T>, api: StoreApi<T>) => S;
 
-interface IStore extends PlaylistSlice {}
+interface IStore extends PlaylistSlice, UserSlice {}
 
 const useStore = create<IStore>(
   (set, get, api): IStore => ({
@@ -21,11 +23,11 @@ const useStore = create<IStore>(
       get as unknown as GetState<PlaylistSlice & PlaylistCommon>,
       api as unknown as StoreApi<PlaylistSlice & PlaylistCommon>
     ),
-    // ...createFishSlice(
-    //   set as unknown as SetState<FishSlice & FishCommon>,
-    //   get as unknown as GetState<FishSlice & FishCommon>,
-    //   api as unknown as StoreApi<FishSlice & FishCommon>
-    // ),
+    ...createUserSlice(
+      set as unknown as SetState<UserSlice & UserCommon>,
+      get as unknown as GetState<UserSlice & UserCommon>,
+      api as unknown as StoreApi<UserSlice & UserCommon>
+    ),
   })
 );
 
