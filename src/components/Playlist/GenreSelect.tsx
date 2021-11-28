@@ -8,9 +8,10 @@ export const GenreSelect = styled("div", {
   alignItems: "center",
   background: "$accent",
   color: "$background",
-  padding: "4px 12px",
+  padding: "6px 12px",
   margin: "8px",
   cursor: "pointer",
+  fontSize: "$2",
 
   "&:hover": {
     filter: "brightness(80%)",
