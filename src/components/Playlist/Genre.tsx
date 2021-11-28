@@ -1,6 +1,6 @@
 import { styled } from "../../../stitches.config";
 
-export const GenreSelect = styled("div", {
+export const Genre = styled("div", {
   borderRadius: "12px",
   border: "none",
   display: "flex",
