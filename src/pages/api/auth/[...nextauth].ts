@@ -34,5 +34,13 @@ export default NextAuth({
       }
       return token;
     },
+
+    async session({ session, token, user }) {
+      if (token?.sub) {
+        session.user.sub = token.sub;
+      }
+      console.log("session", session);
+      return session;
+    },
   },
 });

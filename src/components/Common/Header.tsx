@@ -1,11 +1,8 @@
 import { styled } from "@stitches/react";
 import { Box } from "styles";
 import { Text } from "@components/Common/Text";
-import useStore from "store/useStore";
-import { useEffect } from "react";
-import { fetchUserFromDatabase } from "services/user";
-import { useUser } from "@hooks/useUser";
 import { TUserProfileData } from "types/user";
+import { useSession } from "next-auth/react";
 
 const Navigation = styled("nav", {
   display: "flex",
@@ -13,19 +10,7 @@ const Navigation = styled("nav", {
 });
 
 const Header: React.FC = () => {
-  const { user, mutate, loggedOut } = useUser();
-  const setUser = useStore((state) => state.setUser);
-
-  useEffect(() => {
-    async function fetchUser() {
-      if (user) {
-        const userData = await fetchUserFromDatabase(user.email);
-        setUser(userData);
-      }
-    }
-    fetchUser();
-  }, [user]);
-
+  const { data: session } = useSession();
   return (
     <Box
       css={{
@@ -36,12 +21,8 @@ const Header: React.FC = () => {
         marginBottom: "24px",
       }}
     >
-      <Text size="3" css={{ color: "$primaryText" }}>
-        GetLyst
-      </Text>
-      <Text size="2" css={{ color: "$primaryText" }}>
-        {user?.id}
-      </Text>
+      <Text size="3">GetLyst</Text>
+      <Text size="2">{session?.user.sub}</Text>
     </Box>
   );
 };

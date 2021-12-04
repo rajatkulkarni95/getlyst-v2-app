@@ -1,49 +1,25 @@
-import { useUser } from "../hooks/useUser";
 import Head from "next/head";
-import { useEffect } from "react";
-import Router from "next/router";
 import Link from "next/link";
-import { clearAccessTokens } from "../utils/localStorage";
-import { fetchUserFromDatabase } from "../services/user";
 import { AuthPageType } from "types/protectedPage";
+import { signOut, useSession } from "next-auth/react";
+import { Button } from "@components/Common/Button";
+import { Heading } from "@components/Common/Text";
 
 const Dashboard: AuthPageType = () => {
-  const { user, mutate, loggedOut } = useUser();
-
-  useEffect(() => {
-    async function fetchUser() {
-      if (user) {
-        const userData = await fetchUserFromDatabase(user.email);
-        return userData;
-      }
-    }
-
-    console.log(fetchUser());
-  }, [user]);
-
-  useEffect(() => {
-    if (loggedOut) {
-      mutate(null, false).then(() => Router.replace("/"));
-    }
-  }, [loggedOut]);
+  const { data: session } = useSession();
 
   return (
     <div>
       <Head>
         <title>Dashboard - GetLyst</title>
       </Head>
-      {user && (
+      {session?.user && (
         <div>
-          <h1>Welcome, {user.id}</h1> <Link href="/playlists">Playlists</Link>
-          <button
-            onClick={async () => {
-              clearAccessTokens();
-              await mutate(null); // optimistically update the data and revalidate
-              Router.replace("/");
-            }}
-          >
+          <Heading>Welcome, {session.user.sub}</Heading>{" "}
+          <Link href="/playlists">Playlists</Link>
+          <Button type="secondary" onClick={() => signOut()}>
             Logout
-          </button>
+          </Button>
         </div>
       )}
     </div>

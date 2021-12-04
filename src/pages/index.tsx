@@ -22,7 +22,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Getlyst - Playlist Generator</title>
       </Head>
-      <Heading color="primary">GetLyst - Better Playlist Creation</Heading>
+      <Heading>GetLyst - Better Playlist Creation</Heading>
 
       <Button type="primary" onClick={() => signIn("spotify")}>
         Log in with Spotify
