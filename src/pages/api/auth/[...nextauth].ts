@@ -11,4 +11,25 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
+  callbacks: {
+    async jwt({ token, user, account = {}, profile, isNewUser }) {
+      if (account?.provider && !token[account.provider]) {
+        token[account.provider] = {};
+      }
+
+      if (
+        account?.provider &&
+        token[account.provider] &&
+        account?.access_token
+      ) {
+        token[account.provider].accessToken = account.access_token;
+      }
+
+      if (account?.refresh_token) {
+        token[account.provider].refreshToken = account.refresh_token;
+      }
+
+      return token;
+    },
+  },
 });
