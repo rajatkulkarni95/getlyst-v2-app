@@ -11,6 +11,10 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
+  session: {
+    strategy: "jwt",
+  },
+  secret: config.spotifyClientSecret,
   callbacks: {
     async jwt({ token, user, account = {}, profile, isNewUser }) {
       if (account?.provider && !token[account.provider]) {
@@ -28,7 +32,6 @@ export default NextAuth({
       if (account?.refresh_token) {
         token[account.provider].refreshToken = account.refresh_token;
       }
-
       return token;
     },
   },
