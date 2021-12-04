@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { getWithToken } from "@utils/fetcher";
 import { styled } from "../../../stitches.config";
 import Header from "@components/Common/Header";
+import { AuthPageType } from "types/protectedPage";
 
 type PlaylistType = {
   id: string;
@@ -39,7 +40,7 @@ type DataType = {
   items: [];
 };
 
-const Playlists: NextPage = () => {
+const Playlists: AuthPageType = () => {
   const { data, error } = useSWR<DataType, Error>(
     "https://api.spotify.com/v1/me/playlists/",
     getWithToken
@@ -61,3 +62,5 @@ const Playlists: NextPage = () => {
 };
 
 export default Playlists;
+
+Playlists.auth = true;

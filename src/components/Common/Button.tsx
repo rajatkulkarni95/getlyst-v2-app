@@ -9,7 +9,7 @@ export const Button = styled("button", {
   justifyContent: "center",
   alignItems: "center",
   fontFamily: "$font",
-  width: "150px",
+  minWidth: "150px",
 
   "&:hover": {
     filter: "brightness(80%)",

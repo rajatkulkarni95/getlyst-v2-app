@@ -3,27 +3,30 @@ import Router from "next/router";
 import Head from "next/head";
 import { useEffect } from "react";
 import { useUser } from "../hooks/useUser";
+import { Button } from "@components/Common/Button";
+import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { Heading } from "@components/Common/Text";
+import router from "next/router";
 
 const Home: NextPage = () => {
-  const { user } = useUser();
+  const { data: session, status } = useSession();
+  const isUser = !!session?.user;
 
-  // if logged in, redirect to the dashboard
-  useEffect(() => {
-    if (user) {
-      Router.replace("/playlists");
-    }
-  }, [user]);
+  if (isUser) {
+    router.push("/dashboard");
+  }
 
   return (
     <div>
       <Head>
         <title>Getlyst - Playlist Generator</title>
       </Head>
-      <h1>GetLyst - Better Playlist Creation</h1>
+      <Heading color="primary">GetLyst - Better Playlist Creation</Heading>
 
-      <a href="http://localhost:8080/api/v1/login?service=spotify">
-        Login to Spotify
-      </a>
+      <Button type="primary" onClick={() => signIn("spotify")}>
+        Log in with Spotify
+      </Button>
     </div>
   );
 };

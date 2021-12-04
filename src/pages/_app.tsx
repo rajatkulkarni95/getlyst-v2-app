@@ -1,5 +1,8 @@
 import { globalCss } from "@stitches/react";
 import type { AppProps } from "next/app";
+import { SessionProvider } from "next-auth/react";
+import Auth from "@components/Common/Auth";
+import { AuthPageType } from "types/protectedPage";
 
 const globalStyles = globalCss({
   "*": { margin: 0, padding: 0 },
@@ -13,9 +16,28 @@ const globalStyles = globalCss({
   },
 });
 
-function App({ Component, pageProps }: AppProps) {
+interface AuthAppProps extends AppProps {
+  Component: AuthPageType;
+}
+
+function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AuthAppProps) {
   globalStyles();
-  return <Component {...pageProps} />;
+  return (
+    // `session` comes from `getServerSideProps` or `getInitialProps`.
+    // Avoids flickering/session loading on first load.
+    <SessionProvider session={session} refetchInterval={5 * 60}>
+      {Component.auth ? (
+        <Auth>
+          <Component {...pageProps} />
+        </Auth>
+      ) : (
+        <Component {...pageProps} />
+      )}
+    </SessionProvider>
+  );
 }
 
 export default App;

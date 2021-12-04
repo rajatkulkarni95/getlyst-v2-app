@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import { useUser } from "../hooks/useUser";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -6,8 +5,9 @@ import Router from "next/router";
 import Link from "next/link";
 import { clearAccessTokens } from "../utils/localStorage";
 import { fetchUserFromDatabase } from "../services/user";
+import { AuthPageType } from "types/protectedPage";
 
-const Dashboard: NextPage = () => {
+const Dashboard: AuthPageType = () => {
   const { user, mutate, loggedOut } = useUser();
 
   useEffect(() => {
@@ -51,3 +51,5 @@ const Dashboard: NextPage = () => {
 };
 
 export default Dashboard;
+
+Dashboard.auth = true;
