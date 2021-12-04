@@ -3,6 +3,8 @@ import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import Auth from "@components/Common/Auth";
 import { AuthPageType } from "types/protectedPage";
+import Header from "@components/Common/Header";
+import React from "react";
 
 const globalStyles = globalCss({
   "*": { margin: 0, padding: 0 },
@@ -30,9 +32,12 @@ function App({
     // Avoids flickering/session loading on first load.
     <SessionProvider session={session} refetchInterval={5 * 60}>
       {Component.auth ? (
-        <Auth>
-          <Component {...pageProps} />
-        </Auth>
+        <React.Fragment>
+          <Header />
+          <Auth>
+            <Component {...pageProps} />
+          </Auth>
+        </React.Fragment>
       ) : (
         <Component {...pageProps} />
       )}

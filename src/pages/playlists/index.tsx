@@ -1,11 +1,7 @@
-import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import useSWR from "swr";
-import { getWithToken } from "@utils/fetcher";
 import { styled } from "../../../stitches.config";
-import Header from "@components/Common/Header";
 import { AuthPageType } from "types/protectedPage";
 
 type PlaylistType = {
@@ -37,22 +33,28 @@ const Container = styled("div", {
 });
 
 type DataType = {
-  items: [];
+  data: { items: [] };
 };
 
 const Playlists: AuthPageType = () => {
-  const { data, error } = useSWR<DataType, Error>(
-    "https://api.spotify.com/v1/me/playlists/",
-    getWithToken
-  );
+  const [playlists, setPlaylists] = useState<DataType>();
+
+  useEffect(() => {
+    async function fetchPlaylists() {
+      const result = await fetch("/api/spotify/playlists");
+      const response = await result.json();
+      setPlaylists(response);
+    }
+
+    fetchPlaylists();
+  }, []);
 
   return (
     <Container>
-      <Header />
       <Head>
         <title>GetLyst - Playlists</title>
       </Head>
-      {data?.items?.map((playlist: PlaylistType) => (
+      {playlists?.data?.items?.map((playlist: PlaylistType) => (
         <PlaylistLink href={`/playlists/${playlist.id}`}>
           {playlist.name}
         </PlaylistLink>

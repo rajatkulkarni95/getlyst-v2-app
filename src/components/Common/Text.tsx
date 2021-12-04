@@ -1,6 +1,7 @@
 import { styled } from "../../../stitches.config";
 
 export const Text = styled("p", {
+  color: "$primaryText",
   variants: {
     size: {
       1: {
@@ -25,9 +26,6 @@ export const Text = styled("p", {
       },
     },
     color: {
-      primary: {
-        color: "$primaryText",
-      },
       secondary: {
         color: "$secondaryText",
       },
@@ -36,6 +34,7 @@ export const Text = styled("p", {
 });
 
 export const Heading = styled("h1", {
+  color: "$primaryText",
   variants: {
     size: {
       1: {
@@ -52,9 +51,6 @@ export const Heading = styled("h1", {
       },
     },
     color: {
-      primary: {
-        color: "$primaryText",
-      },
       secondary: {
         color: "$secondaryText",
       },
