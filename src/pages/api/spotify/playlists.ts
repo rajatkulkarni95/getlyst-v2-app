@@ -1,10 +1,10 @@
 import { config } from "config";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getToken, JWT } from "next-auth/jwt";
-import { Token } from "types/token";
+import { TToken } from "types/token";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const token: JWT | null | Token = await getToken({
+  const token: TToken | JWT | null = await getToken({
     req,
     secret: config.spotifyClientSecret,
   });

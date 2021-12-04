@@ -10,7 +10,6 @@ const globalStyles = globalCss({
   "*": { margin: 0, padding: 0 },
   body: {
     height: "100vh",
-    width: "80%",
     display: "block",
     margin: "0 auto",
     fontFamily: "$sans",

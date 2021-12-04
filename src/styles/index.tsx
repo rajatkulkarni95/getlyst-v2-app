@@ -6,3 +6,11 @@ export const FlexColumn = styled("div", {
 });
 
 export const Box = styled("div");
+
+export const PageContainer = styled("div", {
+  margin: "0 auto",
+  width: "1000px",
+  "@bp1": {
+    width: "90%",
+  },
+});

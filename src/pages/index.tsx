@@ -1,13 +1,11 @@
 import type { NextPage } from "next";
-import Router from "next/router";
 import Head from "next/head";
-import { useEffect } from "react";
-import { useUser } from "../hooks/useUser";
 import { Button } from "@components/Common/Button";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { Heading } from "@components/Common/Text";
 import router from "next/router";
+import { PageContainer } from "styles";
 
 const Home: NextPage = () => {
   const { data: session, status } = useSession();
@@ -18,7 +16,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div>
+    <PageContainer>
       <Head>
         <title>Getlyst - Playlist Generator</title>
       </Head>
@@ -27,7 +25,7 @@ const Home: NextPage = () => {
       <Button type="primary" onClick={() => signIn("spotify")}>
         Log in with Spotify
       </Button>
-    </div>
+    </PageContainer>
   );
 };
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { styled } from "../../../stitches.config";
 import { AuthPageType } from "types/protectedPage";
+import { PageContainer } from "styles";
 
 type PlaylistType = {
   id: string;
@@ -50,16 +51,18 @@ const Playlists: AuthPageType = () => {
   }, []);
 
   return (
-    <Container>
-      <Head>
-        <title>GetLyst - Playlists</title>
-      </Head>
-      {playlists?.data?.items?.map((playlist: PlaylistType) => (
-        <PlaylistLink href={`/playlists/${playlist.id}`}>
-          {playlist.name}
-        </PlaylistLink>
-      ))}
-    </Container>
+    <PageContainer>
+      <Container>
+        <Head>
+          <title>GetLyst - Playlists</title>
+        </Head>
+        {playlists?.data?.items?.map((playlist: PlaylistType) => (
+          <PlaylistLink href={`/playlists/${playlist.id}`}>
+            {playlist.name}
+          </PlaylistLink>
+        ))}
+      </Container>
+    </PageContainer>
   );
 };
 
